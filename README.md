@@ -1,9 +1,9 @@
-# 1. Archlinux + i3wm 笔记
+# Archlinux + i3wm 笔记
 
 <!-- TOC -->
 
 - [Archlinux + i3wm 笔记](#archlinux--i3wm-笔记)
-    - [一、安装Arch](#一安装arch)
+    - [安装Arch](#安装arch)
         - [安装前检查](#安装前检查)
         - [系统磁盘](#系统磁盘)
         - [选择镜像源](#选择镜像源)
@@ -20,14 +20,14 @@
             - [（一）、BIOS/MBR方式引导](#一biosmbr方式引导)
             - [（二）、EFI/GPT方式引导](#二efigpt方式引导)
         - [再次开机无网络](#再次开机无网络)
-    - [二、安装i3wm](#二安装i3wm)
+    - [安装i3wm](#安装i3wm)
         - [新建用户（可选）](#新建用户可选)
         - [显卡驱动](#显卡驱动)
         - [安装Xorg框架](#安装xorg框架)
         - [安装i3组件](#安装i3组件)
         - [i3快捷键](#i3快捷键)
         - [常用pcaman指令：](#常用pcaman指令)
-    - [三、常用配置](#三常用配置)
+    - [常用配置](#常用配置)
         - [添加archlinuxcn的软件源](#添加archlinuxcn的软件源)
         - [安装中文输入法](#安装中文输入法)
         - [安装字体](#安装字体)
@@ -36,11 +36,11 @@
 
 <!-- /TOC -->
 
-## 1.1. 一、安装Arch
+## 安装Arch
 
 > 资料来源： 以官方Wiki的方式安装的Archlinux
 
-### 1.1.1. 安装前检查
+### 安装前检查
 
 刻录好系统启动盘(rufus、Etcher)并进入BIOS选择以USB设备启动成功进入系统之后。
 
@@ -55,7 +55,7 @@
 
   一般新的主板都是efi引导（进入BIOS会有efi字样），确认的方法不统一可以看看查看 /sys/firmware/efi/efivars是否有数据。或者使用fdisk查看是否有efi分区。
 
-### 1.1.2. 系统磁盘
+### 系统磁盘
 
 推荐使用fdisk（也可以使用cfdisk），也可以使用DiskGenius提前将分区分好（windows）
 
@@ -113,7 +113,7 @@
    mount /dev/sda1 /mnt/boot
    ```
 
-### 1.1.3. 选择镜像源
+### 选择镜像源
 
 - 编辑mirrorlist文件
 
@@ -125,7 +125,7 @@
 
    实测网易最快，清华网速最慢。可以都复制到文件首（越前面优先级越强）
 
-### 1.1.4. 安装系统基础包
+### 安装系统基础包
 
 > 2019-11-01 Arch的base包被精简，内核包linux可以任选依赖 —— 来源Archlinux贴吧大佬
 
@@ -145,7 +145,7 @@ pacstrap /mnt base base-devel linux dhcp
 > 版权声明：本文为CSDN博主「不应有的淡定」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
 > 原文链接：https://blog.csdn.net/shouldnotappearcalm/article/details/78823682
 
-### 1.1.5. 配置Fstab（自动挂载）
+### 配置Fstab（自动挂载）
 
 生成自动挂载分区的fstab文件，命令如下：
 
@@ -159,7 +159,7 @@ genfstab -L /mnt >> /mnt/etc/fstab
 cat /mnt/etc/fstab
 ```
 
-### 1.1.6. 切换系统执行位置
+### 切换系统执行位置
 
 注意chroot是创建一个虚拟环境，以为我们在这个环境的操作只作用于我们执行那个系统根目录，不会影响到arch CD。这个特性十分方便我们系统挂掉之后的抢救工作以及备份。
 
@@ -167,7 +167,7 @@ cat /mnt/etc/fstab
 arch-chroot /mnt
 ```
 
-### 1.1.7. 设置时区
+### 设置时区
 
 设置为上海时区并生成相关文件：
 
@@ -176,7 +176,7 @@ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 hwclock --systohc
 ```
 
-### 1.1.8. 需要安装的软件
+### 需要安装的软件
 
 ```bash
 pacman -S vim dialog wpa_supplicant ntfs-3g networkmanager
@@ -192,7 +192,7 @@ ntfs-3g （文件系统）
 
 networkmanager （网络管理）
 
-### 1.1.9. 设置Locale
+### 设置Locale
 
 编辑/etc/locale.gen文件，并取消掉`zh_CH.UTF-8 UTF-8`、`zh_HK.UTF-8 UTF-8`、`zh_TW.UTF-8 UTF-8`、`en_US.UTF-8 UTF-8`前面的#号（当然也可以只根据你的需要来）
 
@@ -212,9 +212,9 @@ locale-gen
 LANG=zh_CH.UTF-8
 ```
 
-### 1.1.10. 设置主机名（略）
+### 设置主机名（略）
 
-### 1.1.11. 更改root密码
+### 更改root密码
 
 ````bash
 passwd root
@@ -222,13 +222,13 @@ passwd root
 
 arch中命令提示符一般#代表root用户，$代表普通用户。
 
-### 1.1.12. 安装Intel-ucode（非Intel CPU跳过）
+### 安装Intel-ucode（非Intel CPU跳过）
 
 ```bash
 pacman -S intel-ucode
 ```
 
-### 1.1.13. 安装引导
+### 安装引导
 
 有比较多的方案：Grub2、rEFInd、甚至直接用主板efi启动。这里使用成熟的Grub2。
 
@@ -238,7 +238,7 @@ pacman -S intel-ucode
 pacman -S os-prober ntfs-3g
 ```
 
-#### 1.1.13.1. （一）、BIOS/MBR方式引导
+#### （一）、BIOS/MBR方式引导
 
 - 安装grub包：
 
@@ -262,7 +262,7 @@ pacman -S os-prober ntfs-3g
    grub-mkconfig -o /boot/grub/grub.cfg
    ```
 
-#### 1.1.13.2. （二）、EFI/GPT方式引导
+#### （二）、EFI/GPT方式引导
 
 - 安装grub、efibootmgr包：
 
@@ -286,7 +286,7 @@ pacman -S os-prober ntfs-3g
 
 多系统话最好记得检查一下grub.cfg是否都包含了。
 
-### 1.1.14. 再次开机无网络
+### 再次开机无网络
 
 很简单没有启动网络服务，幸好我们前面是下载一个NetworkManager。可以把他加入开机启动项中：
 
@@ -299,11 +299,11 @@ systemctl enable NetworkManager  # 加入开机启动
 
 
 
-## 1.2. 二、安装i3wm
+## 安装i3wm
 
 > 资料来源： ArchLinux安装（三）-i3wm安装及配置
 
-### 1.2.1. 新建用户（可选）
+### 新建用户（可选）
 
 - 还是要有个健康的使用习惯：
 
@@ -327,7 +327,7 @@ systemctl enable NetworkManager  # 加入开机启动
 
   要么找到`# %wheel ALL=(ALL)ALL`取消前面的#注释，要么就在`root ALL=(ALL)ALL`的下一行加入自己用户的语句。
 
-### 1.2.2. 显卡驱动
+### 显卡驱动
 
 - 查看显卡类型：
 
@@ -340,9 +340,9 @@ systemctl enable NetworkManager  # 加入开机启动
   ```bash
   pacman -Ss xf86-video
   ```
-  
+
 - 常见的开源显卡驱动
-  
+
   | 类型                 | 软件包名           |
   | -------------------- | ------------------ |
   | 通用(不支持硬件加速) | xf86-video-vesa    |
@@ -352,7 +352,7 @@ systemctl enable NetworkManager  # 加入开机启动
   | Nvidia               | xf86-video-nouveau |
 
 
-### 1.2.3. 安装Xorg框架
+### 安装Xorg框架
 
 - 下载安装依赖包：
 
@@ -373,7 +373,7 @@ systemctl enable NetworkManager  # 加入开机启动
   mv xorg.conf.new /etc/X11/xorg.conf
   ```
 
-### 1.2.4. 安装i3组件
+### 安装i3组件
 
 - 随便再安装个基础终端和中文字体：
 
@@ -389,7 +389,7 @@ systemctl enable NetworkManager  # 加入开机启动
   sudo systemctl start lightdm
   ```
 
-### 1.2.5. i3快捷键
+### i3快捷键
 
 > 链接 [i3wm快捷键]( https://blog.csdn.net/weixin_43833642/article/details/103032095 ) ，建议读一读[i3wm.org]( https://i3wm.org/docs/userguide.html#_opening_terminals_and_moving_around )
 
@@ -418,7 +418,7 @@ systemctl enable NetworkManager  # 加入开机启动
 | $mod + Shift + :        | 窗口右移                                          |
 | $mod + Shift + SpaceBar | 窗口在平铺式／浮动式转换                          |
 
-### 1.2.6. 常用pcaman指令：
+### 常用pcaman指令：
 
 ```bash
 sudo pacman -S 软件名　# 安装
@@ -432,9 +432,9 @@ sudo pacman -Qs # 搜索已安装的包
 
 
 
-## 1.3. 三、常用配置
+## 常用配置
 
-### 1.3.1. 添加archlinuxcn的软件源
+### 添加archlinuxcn的软件源
 
 > 链接:  [arch/manjaro - 添加archlinuxcn的软件源]( http://www.360doc.com/content/19/1014/22/11770334_866813856.shtml )
 
@@ -485,7 +485,7 @@ sudo pacman -Qs # 搜索已安装的包
   ## Arch Linux repository mirrorlist
   ## Generated on 2019-11-20
   ##
-  
+
   ## China
   Server = http://mirrors.163.com/archlinux/$repo/os/$arch
   Server = http://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch
@@ -508,7 +508,7 @@ sudo pacman -Qs # 搜索已安装的包
   wget -O /etc/pacman.d/mirrorlist https://www.archlinux.org/mirrorlist/?country=CN
   ```
 
-### 1.3.2. 安装中文输入法
+### 安装中文输入法
 
 - 安装fcitx管理器和搜狗：
 
@@ -536,7 +536,7 @@ sudo pacman -Qs # 搜索已安装的包
   exec_always --no-startup-id fcitx
   ```
 
-### 1.3.3. 安装字体
+### 安装字体
 
 - 安装字体包：
 
@@ -557,9 +557,9 @@ sudo pacman -Qs # 搜索已安装的包
 
 - 查找更多中文字体：
 
-  > 链接 : [arhlinux wiki Fonts]( [https://wiki.archlinux.org/index.php/Fonts_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E6%96%87%E5%AD%97](https://wiki.archlinux.org/index.php/Fonts_(简体中文)#中文字) 
+  > 链接 : [arhlinux wiki Fonts]( [https://wiki.archlinux.org/index.php/Fonts_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E6%96%87%E5%AD%97](https://wiki.archlinux.org/index.php/Fonts_(简体中文)#中文字)
 
-### 1.3.4. 终端配置
+### 终端配置
 
 这里是采用的alacritty + oh my zsh + agnoster的方案
 
@@ -616,7 +616,7 @@ sudo pacman -Qs # 搜索已安装的包
 
   > 链接：[简单的manjaro安装powerline及vim zsh配置]( https://blog.csdn.net/z924139546/article/details/79815788 )
 
-### 1.3.5. 常用软件
+### 常用软件
 
 | 软件名             | 包名                          |
 | ------------------ | ----------------------------- |
@@ -627,7 +627,7 @@ sudo pacman -Qs # 搜索已安装的包
 | 装逼利器           | neofetch                      |
 | wps                | wps-office                    |
 | tim                | deepin-wine-tim               |
-| 截屏工具           | shutter                     |
+| 截屏工具           | shutter                       |
 | 资源管理器         | ranger                        |
 | 网易云音乐         | netease-cloud-music           |
 | 程序启动器         | rofi / dmenu                  |
