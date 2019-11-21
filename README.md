@@ -306,9 +306,11 @@ systemctl enable NetworkManager  # 加入开机启动
   ```bash
   pacman -Ss xf86-video
   ```
+  
 - 常见的开源显卡驱动
+  
   | 类型                 |      软件包名      |
-  | :------------------- | :----------------: |
+  | ------------------- | ----------------  |
   | 通用(不支持硬件加速) |  xf86-video-vesa   |
   | Intel                |  xf86-video-intel  |
   | AMD                  |   xf86-video-ati   |
@@ -417,14 +419,13 @@ sudo pacman -Qs # 搜索已安装的包
   sudo pacman -Syy
   sudo pacman -S archlinuxcn-keyring
   ```
-```
-  
+
 -  设置aur源(可选) ：
 
   ```bash
   sudo vim /etc/yaourtrc
   AURURL="https://aur.tuna.tsinghua.edu.cn"
-```
+  ```
 
 - 也可以想官方一样同时添加多个源，防止下载过慢
 
@@ -539,7 +540,8 @@ sudo pacman -Qs # 搜索已安装的包
   ```bash
   vim ~/.config/alacritty/alacritty.yml
   
-```
+  ```
+
   
 - 安装compton
 
