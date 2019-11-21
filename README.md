@@ -10,36 +10,36 @@
 
 刻录好系统启动盘(rufus、Etcher)并进入BIOS选择以USB设备启动成功进入系统之后。
 
-1. 网络连接
+- 网络连接
 
-   若ping没有网络时可能是没有启动网络服务：
+  若ping没有网络时可能是没有启动网络服务：
 
-   - 有线网络：使用ip a命令查看网卡端口，然后再用dhcpcd启动那个网口。（eg: dhcpcd enp0s3）
-   - 无线网路：使用wifi-menu命令链接。
+  - 有线网络：使用ip a命令查看网卡端口，然后再用dhcpcd启动那个网口。（eg: dhcpcd enp0s3）
+  - 无线网路：使用wifi-menu命令链接。
 
-2. 主板引导方式
+- 主板引导方式
 
-   一般新的主板都是efi引导（进入BIOS会有efi字样），确认的方法不统一可以看看查看 /sys/firmware/efi/efivars是否有数据。或者使用fdisk查看是否有efi分区。
+  一般新的主板都是efi引导（进入BIOS会有efi字样），确认的方法不统一可以看看查看 /sys/firmware/efi/efivars是否有数据。或者使用fdisk查看是否有efi分区。
 
 ### 02. 系统磁盘
 
 推荐使用fdisk（也可以使用cfdisk），可以使用DiskGenius提前将分区分好（windows）
 
-1. 查看磁盘信息
+- 查看磁盘信息
 
-   ````bash
-   fdisk -l
-   ````
+  ````bash
+  fdisk -l
+  ````
 
-2. 选择需要分区的磁盘
+- 选择需要分区的磁盘
 
    ````bash
    fdisk /dev/sda
    ````
 
-3. （如果是全新的硬盘需要新建分区表，如果是BIOS/MBR就输入o，如果是EFI/GPT就输入g）
+- （如果是全新的硬盘需要新建分区表，如果是BIOS/MBR就输入o，如果是EFI/GPT就输入g）
 
-4. 输入n，进入创建分区：
+- 输入n，进入创建分区：
 
    - Partition type（分区类型）—— 默认，primary（主要分区）
 
@@ -51,11 +51,11 @@
 
    > 题外话：建议创建一个挂载home的磁盘存储个人配置：以后可以多个系统共用一个home可以不用复制、重装系统也方便。
 
-5. 输入w，退出命令
+- 输入w，退出命令
 
    不小心建错了，可输入d 删除分区
 
-6. 格式化磁盘
+- 格式化磁盘
 
    如果有efi引导磁盘，就是用fat32格式化它：
 
@@ -69,7 +69,7 @@
    mkfs.ext4 /dev/sda2
    ````
 
-7. 挂载分区
+- 挂载分区
 
    ```bash
    # 挂在临时安装节点
@@ -81,13 +81,13 @@
 
 ### 03. 选择镜像源
 
-1. 编辑mirrorlist文件
+- 编辑mirrorlist文件
 
    ````bash
    vim /etc/pacman.d/mirrorlist
    ````
 
-2. 搜索163（网易）、cqu（重庆大学）、tsinghua（清华，记得改成https）、zju（浙江大学）
+- 搜索163（网易）、cqu（重庆大学）、tsinghua（清华，记得改成https）、zju（浙江大学）
 
    实测网易最快，清华网速最慢。可以都复制到文件首（越前面优先级越强）
 
@@ -160,7 +160,7 @@ networkmanager （网络管理）
 
 ### 09. 设置Locale
 
-编辑/etc/locale.gen文件，并取消掉**zh_CH.UTF-8 UTF-8**、**zh_HK.UTF-8 UTF-8**、**zh_TW.UTF-8 UTF-8**、**en_US.UTF-8 UTF-8**前面的#号（当然也可以只根据你的需要来）
+编辑/etc/locale.gen文件，并取消掉`zh_CH.UTF-8 UTF-8`、`zh_HK.UTF-8 UTF-8`、`zh_TW.UTF-8 UTF-8`、`en_US.UTF-8 UTF-8`前面的#号（当然也可以只根据你的需要来）
 
 ```bash
 vim /etc/locale.gen
@@ -206,13 +206,13 @@ pacman -S os-prober ntfs-3g
 
 #### （一）、BIOS/MBR方式引导
 
-1. 安装grub包：
+- 安装grub包：
 
    ```bash
    pacman -S grub
    ```
 
-2. 部署grub：
+- 部署grub：
 
    ````bash
    grub-install --target=i386-pc /dev/sda #注意是整个盘符
@@ -222,7 +222,7 @@ pacman -S os-prober ntfs-3g
    >
    > From :  https://www.cnblogs.com/studyone/p/5500679.html
 
-3. 生成配置文件：
+- 生成配置文件：
 
    ```bash
    grub-mkconfig -o /boot/grub/grub.cfg
@@ -230,19 +230,19 @@ pacman -S os-prober ntfs-3g
 
 #### （二）、EFI/GPT方式引导
 
-1. 安装grub、efibootmgr包：
+- 安装grub、efibootmgr包：
 
    ```bash
    pacman -S grub efibootmgr
    ```
 
-2. 部署grub：
+- 部署grub：
 
    ````bash
    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
    ````
 
-3. 生成配置文件：
+- 生成配置文件：
 
    ```bash
    grub-mkconfig -o /boot/grub/grub.cfg
@@ -309,11 +309,11 @@ systemctl enable NetworkManager  # 加入开机启动
   
 - 常见的开源显卡驱动
   
-  | 类型                 |      软件包名      |
-  | ------------------- | ----------------  |
-  | 通用(不支持硬件加速) |  xf86-video-vesa   |
-  | Intel                |  xf86-video-intel  |
-  | AMD                  |   xf86-video-ati   |
+  | 类型                 | 软件包名           |
+  | -------------------- | ------------------ |
+  | 通用(不支持硬件加速) | xf86-video-vesa    |
+  | Intel                | xf86-video-intel   |
+  | AMD                  | xf86-video-ati     |
   | AMD                  | xf86-video-amdgpu  |
   | Nvidia               | xf86-video-nouveau |
 
@@ -542,7 +542,6 @@ sudo pacman -Qs # 搜索已安装的包
   
   ```
 
-  
 - 安装compton
 
   ```bash
@@ -575,7 +574,7 @@ sudo pacman -Qs # 搜索已安装的包
 | 装逼利器           | neofetch                      |
 | wps                | wps-office                    |
 | tim                | deepin-wine-tim               |
-| 截屏工具           | `shutter`                     |
+| 截屏工具           | shutter                     |
 | 资源管理器         | ranger                        |
 | 网易云音乐         | netease-cloud-music           |
 | 程序启动器         | rofi / dmenu                  |
