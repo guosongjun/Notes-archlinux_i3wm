@@ -1,6 +1,6 @@
 # Archlinux + i3wm 笔记
 
-
+[TOC]
 
 ## 一、安装Arch
 
@@ -23,7 +23,7 @@
 
 ### 02. 系统磁盘
 
-推荐使用fdisk（也可以使用cfdisk），可以使用DiskGenius提前将分区分好（windows）
+推荐使用fdisk（也可以使用cfdisk），也可以使用DiskGenius提前将分区分好（windows）
 
 - 查看磁盘信息
 
@@ -271,7 +271,7 @@ systemctl enable NetworkManager  # 加入开机启动
 
 ### 01. 新建用户（可选）
 
-- 还是要有个健康的使用习惯，新建一个用户：
+- 还是要有个健康的使用习惯：
 
   ```bash
   useradd -m -G wheel 用户名
@@ -291,7 +291,7 @@ systemctl enable NetworkManager  # 加入开机启动
   vi /etc/sudoers #或者 visudo
   ```
 
-  要么找到# %wheel ALL=(ALL)ALL取消前面的#注释，要么就在root ALL=(ALL)ALL的下一行加入自己用户的语句。
+  要么找到`# %wheel ALL=(ALL)ALL`取消前面的#注释，要么就在`root ALL=(ALL)ALL`的下一行加入自己用户的语句。
 
 ### 02. 显卡驱动
 
@@ -323,7 +323,7 @@ systemctl enable NetworkManager  # 加入开机启动
 - 下载安装依赖包：
 
   ```bash
-  pacman -S xorg-server xorg-xrandr xorg-xrdb xorg-xinput xf86-input-mouse xf86-input-keyboard
+  sudo pacman -S xorg-server xorg-xrandr xorg-xrdb xorg-xinput xf86-input-mouse xf86-input-keyboard
   ```
 
 - 生成Xorg配置：
@@ -357,7 +357,7 @@ systemctl enable NetworkManager  # 加入开机启动
 
 ### 05. i3快捷键
 
-> Form [i3wm快捷键]( https://blog.csdn.net/weixin_43833642/article/details/103032095 ) ，建议读一读[i3wm.org]( https://i3wm.org/docs/userguide.html#_opening_terminals_and_moving_around )
+> 链接 [i3wm快捷键]( https://blog.csdn.net/weixin_43833642/article/details/103032095 ) ，建议读一读[i3wm.org]( https://i3wm.org/docs/userguide.html#_opening_terminals_and_moving_around )
 
 | 快捷键                  | 功能                                              |
 | ----------------------- | ------------------------------------------------- |
@@ -402,9 +402,9 @@ sudo pacman -Qs # 搜索已安装的包
 
 ### 01. 添加archlinuxcn的软件源
 
-> Form:  [arch/manjaro - 添加archlinuxcn的软件源]( http://www.360doc.com/content/19/1014/22/11770334_866813856.shtml )
+> 链接:  [arch/manjaro - 添加archlinuxcn的软件源]( http://www.360doc.com/content/19/1014/22/11770334_866813856.shtml )
 
-- 在**/etc/pacman.conf**尾新添加：
+- 在`/etc/pacman.conf`尾新添加：
 
   ```config
   [archlinuxcn]
@@ -512,7 +512,7 @@ sudo pacman -Qs # 搜索已安装的包
   sudo pacman -S noto-fonts-cjk adobe-source-han-sans-cn-fonts adobe-source-han-serif-cn-fonts
   ```
 
-- 配置字体：
+- 配置字体（可选）：
 
   将[fonts.conf](.config/fontconfig)复制到.config/fontconfig中去。
 
@@ -523,7 +523,7 @@ sudo pacman -Qs # 搜索已安装的包
 
 - 查找更多中文字体：
 
-  > [arhlinux wiki Fonts]( [https://wiki.archlinux.org/index.php/Fonts_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E6%96%87%E5%AD%97](https://wiki.archlinux.org/index.php/Fonts_(简体中文)#中文字) 
+  > 链接 : [arhlinux wiki Fonts]( [https://wiki.archlinux.org/index.php/Fonts_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E6%96%87%E5%AD%97](https://wiki.archlinux.org/index.php/Fonts_(简体中文)#中文字) 
 
 ### 04. 终端配置
 
@@ -535,11 +535,11 @@ sudo pacman -Qs # 搜索已安装的包
   sudo pacman -S alacritty
   ```
 
-- 修改alacritty配置
+- 修改alacritty配置，修改透明度：
 
   ```bash
   vim ~/.config/alacritty/alacritty.yml
-  
+  background_opacity: 0.7
   ```
 
 - 安装compton
@@ -557,11 +557,30 @@ sudo pacman -Qs # 搜索已安装的包
 
 - 安装zsh
 
+  ```bash
+  sudo pacman -S zsh
+  ```
+
+- 将zsh改为默认shall
+
+  ```bash
+  which zsh # 获得安装目录
+  chsh -S /usr/bin/zsh
+  ```
+
 - 安装oh my zsh
 
-- 设置主题
+  ```bash
+  sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  ```
 
-- 安装插件
+  建议根据官网说明来：
+
+  > 链接 :  [官方安装](https://github.com/ohmyzsh/ohmyzsh#basic-installation )
+
+- 安装Powerline Fonts 字体：
+
+  > 链接：[简单的manjaro安装powerline及vim zsh配置]( https://blog.csdn.net/z924139546/article/details/79815788 )
 
 ### 07. 常用软件
 
@@ -593,7 +612,6 @@ sudo pacman -Qs # 搜索已安装的包
 | 酸酸               | shadowsocks-qt5               |
 | Proxychains 代理   | proxychains-ng                |
 
+更多软件推荐：
 
-
-
-
+> 链接 : [Manjaro 常用软件安装]( https://blog.csdn.net/weixin_43968923/article/details/86662256 )
